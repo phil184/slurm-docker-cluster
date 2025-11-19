@@ -37,6 +37,11 @@ then
     done
     echo "-- slurmdbd is now active ..."
 
+    if [ "$SLURMREST_MODE" = "jwt"]; then
+     echo "---> SLURMREST_MODE=jwt: using /etc/slurm/slurm_jwt.conf as active slurm.conf"
+     cp /etc/slurm/slurm_jwt.conf /etc/slurm/slurm.conf
+    fi
+
     echo "---> Starting the Slurm Controller Daemon (slurmctld) ..."
     exec gosu slurm /usr/sbin/slurmctld -i -Dvvv
 fi
@@ -58,7 +63,19 @@ then
     # Note: slurmrestd should NOT be run as SlurmUser or root (security requirement)
     mkdir -p /var/run/slurmrestd
     chown slurmrest:slurmrest /var/run/slurmrestd
-    exec gosu slurmrest /usr/sbin/slurmrestd -vvv unix:/var/run/slurmrestd/slurmrestd.socket 0.0.0.0:6820
+
+    if [ "$SLURMREST_MODE" = "local" ]; then
+     echo "Starting slurmrestd in local mode"
+     exec gosu slurmrest /usr/sbin/slurmrestd -vvv unix:/var/run/slurmrestd/slurmrestd.socket 0.0.0.0:6820
+    else
+     echo "Starting slurmrestd in JWT mode"
+     export SLURM_JWT=daemon
+     exec gosu slurmrest /usr/sbin/slurmrestd -vvv -a rest_auth/jwt 0.0.0.0:6820
+     mkdir -p /etc/slurm/jwt
+     dd if=/dev/urandom of=/etc/slurm/jwt/secret.key bs=32 count=1
+     chown slurm:slurm /etc/slurm/jwt/secret.key
+     chmod 600 /etc/slurm/jwt/secret.key
+    fi
 fi
 
 if [ "$1" = "slurmd" ]

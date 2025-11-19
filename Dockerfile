@@ -57,6 +57,8 @@ RUN set -ex \
        rpmdevtools \
        rrdtool-devel \
        wget \
+       libjwt \
+       libjwt-devel \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 
