@@ -58,7 +58,7 @@ services:
     hostname: slurmctld
     working_dir: /data
     environment:
-      - SLURMREST_MODE: ${SLURMREST_MODE:-local}
+      SLURMREST_MODE: ${SLURMREST_MODE:-local}
     volumes:
       - etc_munge:/etc/munge:z
       - etc_slurm:/etc/slurm:z
