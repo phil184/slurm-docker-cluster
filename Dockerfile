@@ -129,6 +129,8 @@ RUN set -ex \
        readline \
        vim-enhanced \
        wget \
+       libjwt \
+       libjwt-devel \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 
@@ -199,6 +201,10 @@ RUN set -ex \
        else \
          echo "No version-specific config found for ${MAJOR_MINOR}, using latest (25.05)"; \
          cp /tmp/slurm-config/25.05/slurm.conf /etc/slurm/slurm.conf; \
+       fi \
+    && if [ -f "/tmp/slurm-config/${MAJOR_MINOR}/slurm_jwt.conf" ]; then \
+         echo "Copying slurm_jwt.conf for ${MAJOR_MINOR}"; \
+         cp /tmp/slurm-config/${MAJOR_MINOR}/slurm_jwt.conf /etc/slurm/slurm_jwt.conf; \
        fi \
     && cp /tmp/slurm-config/common/slurmdbd.conf /etc/slurm/slurmdbd.conf \
     && if [ -f "/tmp/slurm-config/${MAJOR_MINOR}/cgroup.conf" ]; then \

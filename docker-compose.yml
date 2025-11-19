@@ -57,6 +57,8 @@ services:
     container_name: slurmctld
     hostname: slurmctld
     working_dir: /data
+    environment:
+      - SLURMREST_MODE: ${SLURMREST_MODE:-local}
     volumes:
       - etc_munge:/etc/munge:z
       - etc_slurm:/etc/slurm:z
@@ -82,6 +84,8 @@ services:
     container_name: slurmrestd
     hostname: slurmrestd
     privileged: true
+    environment:
+      SLURMREST_MODE: ${SLURMREST_MODE:-local}
     volumes:
       - etc_munge:/etc/munge
       - etc_slurm:/etc/slurm
