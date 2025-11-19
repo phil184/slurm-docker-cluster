@@ -37,7 +37,7 @@ then
     done
     echo "-- slurmdbd is now active ..."
 
-    if [ "$SLURMREST_MODE" = "jwt"]; then
+    if [ "$SLURMREST_MODE" = "jwt" ]; then
      echo "---> SLURMREST_MODE=jwt: using /etc/slurm/slurm_jwt.conf as active slurm.conf"
      cp /etc/slurm/slurm_jwt.conf /etc/slurm/slurm.conf
     fi
