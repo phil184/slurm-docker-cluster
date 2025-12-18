@@ -203,6 +203,7 @@ RUN set -ex \
     && if [ -f "/tmp/slurm-config/${MAJOR_MINOR}/slurm_jwt.conf" ]; then \
          echo "Copying slurm_jwt.conf for ${MAJOR_MINOR}"; \
          cp /tmp/slurm-config/${MAJOR_MINOR}/slurm_jwt.conf /etc/slurm/slurm_jwt.conf; \
+         cp /tmp/slurm-config/common/slurmdbd_websocket.conf /etc/slurm/slurmdbd.conf; \
        fi \
     && cp /tmp/slurm-config/common/slurmdbd.conf /etc/slurm/slurmdbd.conf \
     && if [ -f "/tmp/slurm-config/${MAJOR_MINOR}/cgroup.conf" ]; then \

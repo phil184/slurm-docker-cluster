@@ -79,7 +79,7 @@ then
      exec gosu slurmrest /usr/sbin/slurmrestd -vvv unix:/var/run/slurmrestd/slurmrestd.socket 0.0.0.0:6820
     else
      echo "Starting slurmrestd in JWT mode"
-     SLURM_JWT=invalid
+     export SLURM_JWT=daemon
      exec gosu slurmrest /usr/sbin/slurmrestd -vvv -a rest_auth/jwt 0.0.0.0:6820
     fi
 fi
